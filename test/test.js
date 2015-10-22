@@ -342,4 +342,141 @@ describe('Kairos', function () {
     
     done();
   });
+  
+  it('should return a Kairos.Timer instance', function (done) {
+    assert.doesNotThrow(function () {
+      new Kairos.Timer('00:00:01');
+    });
+    
+    done();
+  });
+  
+  it('should throw error when timeout is not given', function (done) {
+    assert.throws(function () {
+      new Kairos.Timer();
+    });
+    
+    done();
+  });
+  
+  it('should execute timer two times', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200', function () {
+      if (timer.getCurrent() === 2) {
+        done();
+      }
+    }, 2);
+    timer.start();
+  });
+  
+  it('should execute timer once', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200', function () {
+      done();
+    });
+    timer.runOnce();
+  });
+  
+  it('should stop timer after two ticks', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200', function () {
+      if (timer.getCurrent() === 2) {
+        timer.stop();
+        done();
+      }
+    });
+    timer.start();
+  });
+  
+  it('should set timeout value', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200');
+    timer.setTimeout('00:01');
+    assert.equal(timer.getTimeout(), '00:01');
+    done();
+  });
+  
+  it('should set callback value', function (done) {
+    var cb = function () { console.log('hello world') };
+    var timer = new Kairos.Timer('00:00:00:200');
+    timer.setCallback(cb);
+    assert.equal(timer.getCallback(), cb);
+    done();
+  });
+  
+  it('should set times value', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200', function () {
+      done();
+    });
+    timer.setTimes(3);
+    assert.equal(timer.getTimes(), 3);
+  });
+  
+  it('should return current tick value', function (done) {
+    var times = 0;
+    var timer = new Kairos.Timer('00:00:00:200', function () {
+      times++;
+      if (times === 1) {
+        assert.equal(timer.getCurrent(), 1);
+      }
+      if (times === 2) {
+        assert.equal(timer.getCurrent(), 2);
+        done();
+      }
+    }, 2);
+    timer.start();
+  });
+  
+  it('should return is timer is run once scheduled', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200', function () {
+      done();
+    }, 2);
+    timer.runOnce();
+    assert.equal(timer.getRunOnce(), true);
+  });
+  
+  it('should return is timer is run once scheduled', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200', function () {
+      done();
+    }, 2);
+    timer.runOnce();
+    assert.equal(timer.getRunOnce(), true);
+  });
+  
+  it('should return is timer is running', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200', function () {
+      done();
+    }, 1);
+    timer.start();
+    assert.equal(timer.isRunning(), true);
+  });
+  
+  it('should return is timer is running', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200', function () {
+      done();
+    }, 1);
+    timer.start();
+    assert.equal(timer.isRunning(), true);
+  });
+  
+  it('should execute the given callback on tick', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200');
+    timer.onTick(function () {
+      done();
+    }, 1);
+    timer.start();
+  });
+  
+  it('should execute the given callback on start', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200');
+    timer.onStart(function () {
+      done();
+    }, 1);
+    timer.start();
+  });
+  
+  it('should execute the given callback on stop', function (done) {
+    var timer = new Kairos.Timer('00:00:00:200');
+    timer.onStop(function () {
+      done();
+    }, 1);
+    timer.start();
+    timer.stop();
+  });
 });

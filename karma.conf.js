@@ -7,6 +7,7 @@ module.exports = function (config) {
       'bower_components/mocha/mocha.css',
       'src/kairos.js',
       'src/gnomon/Gnomon.js',
+      'src/timer/Timer.js',
       'bower_components/assert/assert.js',
       'bower_components/mocha/mocha.js',
       'test/test.js',

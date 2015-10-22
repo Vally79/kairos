@@ -234,7 +234,7 @@
    * @memberof module:Kairos
    * @method max
    * @param {String[]|Number[]|Kairos.Gnomon[]} values Array with time expressions
-   * @returns
+   * @returns {String}
    */
   Kairos.max = function (values) {
     if (!(values instanceof Array)) {
@@ -254,9 +254,12 @@
     return !!(max instanceof Kairos.Gnomon) ? max.toExpression() : new Kairos.Gnomon(max).toExpression();
   };
 
+  var noop = function () {};
+
   // Node.js
   if (typeof module === 'object' && module.exports) {
     //=include /gnomon/Gnomon.js
+    //=include /timer/Timer.js
     module.exports = Kairos;
   }
   // AMD / RequireJS
